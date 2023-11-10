@@ -1,20 +1,17 @@
 'use client';
 
-
-
+import { HiChevronLeft } from 'react-icons/hi'
+import { HiEllipsisHorizontal } from 'react-icons/hi2';
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { Conversation, User } from "@prisma/client";
 
 import useOtherUser from "@/app/hooks/useOtherUser";
+import useActiveList from "@/app/hooks/useActiveList";
 
 import Avatar from "@/app/components/Avatar";
-import { Head } from "next/document";
-import {  HiOutlineChevronLeft } from "react-icons/hi";
-import Link from "next/link";
-import { HiChevronLeft, HiEllipsisHorizontal } from "react-icons/hi2";
-import ProfileDrawer from "./ProfileDrawer";
 import AvatarGroup from "@/app/components/AvatarGroup";
-import useActiveList from "@/app/hooks/useActiveList";
+import ProfileDrawer from "./ProfileDrawer";
 
 
 
