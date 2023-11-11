@@ -1,5 +1,3 @@
-"use client"
-
 import { User } from "@prisma/client";
 import axios from "axios";
 import { CldUploadButton } from "next-cloudinary";
@@ -9,89 +7,87 @@ import { FieldValue, FieldValues, SubmitHandler, useForm } from "react-hook-form
 import toast from "react-hot-toast";
 import Button from "../Button";
 import Modal from "../Modal";
-import Image from "next/image"
+import Image from "next/image";
 import Input from "../inputs/Input";
 
-
-interface SettingsModalProps{
-    isOpen?: boolean;
-    onClose: () => void;
-    currentUser: User;
+interface SettingsModalProps {
+  isOpen?: boolean;
+  onClose: () => void;
+  currentUser: User;
 }
 
 const SettingsModal: React.FC<SettingsModalProps> = ({
-    isOpen,
-    onClose,
-    currentUser
+  isOpen,
+  onClose,
+  currentUser,
 }) => {
-    const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
-    const {
-        register,
+  const {
+    register,
     handleSubmit,
     setValue,
     watch,
-    formState: {
-      errors,
-    }
-    } = useForm<FieldValues>({
-        defaultValues: {
-            name: currentUser?.name,
-            image: currentUser?.image
-        }
+    formState: { errors },
+  } = useForm<FieldValues>({
+    defaultValues: {
+      name: currentUser?.name,
+      image: currentUser?.image,
+    },
+  });
+
+  const image = watch("image");
+
+  const handleUpload = (result: any) => {
+    setValue("image", result.info.secure_url, {
+      shouldValidate: true,
     });
+  };
 
-    const image = watch('image');
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    setIsLoading(true);
 
-    const handleUpload = (result: any) => {
-        setValue('image', result.info.secure_url, { 
-          shouldValidate: true 
-        });
-      }
+    axios
+      .post("/api/settings", data)
+      .then(() => {
+        router.refresh();
+        onClose();
+      })
+      .catch(() => toast.error("Something went wrong!"))
+      .finally(() => setIsLoading(false));
+  };
 
-      const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        setIsLoading(true);
-    
-        axios.post('/api/settings', data)
-        .then(() => {
-          router.refresh();
-          onClose();
-        })
-        .catch(() => toast.error('Something went wrong!'))
-        .finally(() => setIsLoading(false));
-      }
-      
-      return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="space-y-12">
-              <div className="border-b border-gray-900/10 pb-12">
-                <h2 
-                  className="
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="space-y-6 md:space-y-12">
+          <div className="border-b border-gray-900/10 pb-6 md:pb-12">
+            <h2
+              className="
                     text-base 
                     font-semibold 
-                    leading-7 
+                    leading-6 
                     text-gray-900
                   "
-                >
-                  Profile
-                </h2>
-                <p className="mt-1 text-sm leading-6 text-gray-600">
+            >
+              Profile
+            </h2>
+            <p className="mt-1 text-sm leading-6 text-gray-600">
               Edit your public information.
             </p>
-            <div className="mt-10 flex flex-col gap-y-8">
-            <Input
+            <div className="mt-6 md:mt-10 flex flex-col gap-y-4 md:gap-y-8">
+              <Input
                 disabled={isLoading}
-                label="Name" 
-                id="name" 
-                errors={errors} 
-                required 
+                label="Name"
+                id="name"
+                errors={errors}
+                required
                 register={register}
               />
               <div>
-                <label 
-                  htmlFor="photo" 
+                <label
+                  htmlFor="photo"
                   className="
                     block 
                     text-sm 
@@ -100,60 +96,54 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                     text-gray-900
                   "
                 >
-                Photo
-                  </label>
-                  <div className="mt-2 flex items-center gap-x-3">
-                   <Image 
-                   width="48"
-                   height="48" 
-                   className="rounded-full" 
-                   src={image || currentUser?.image || '/images/placeholder.jpg'}
-                   alt="Avatar"
-                   />
-                   <CldUploadButton 
-                    options={{ maxFiles: 1 }} 
-                    onUpload={handleUpload} 
+                  Photo
+                </label>
+                <div className="mt-2 flex flex-col items-center md:flex-row gap-y-3 md:gap-y-0 md:gap-x-3">
+                  <Image
+                    width="48"
+                    height="48"
+                    className="rounded-full"
+                    src={image || currentUser?.image || "/images/placeholder.jpg"}
+                    alt="Avatar"
+                  />
+                  <CldUploadButton
+                    options={{ maxFiles: 1 }}
+                    onUpload={handleUpload}
                     uploadPreset="heckygbg"
                   >
-                    <Button
-                      disabled={isLoading}
-                      secondary
-                      type="button"
-                    >
+                    <Button disabled={isLoading} secondary type="button">
                       Change
                     </Button>
                   </CldUploadButton>
-                  </div>
-                 </div>
+                </div>
+              </div>
             </div>
-         </div>
+          </div>
 
-         <div 
-          className="
+          <div
+            className="
             mt-6 
             flex 
-            items-center 
+            flex-col
+            items-center
             justify-end 
-            gap-x-6
+            gap-y-4
+            md:flex-row
+            md:items-center
+            md:justify-end
           "
-        >
-            <Button 
-            disabled={isLoading}
-            secondary 
-            onClick={onClose}
           >
-            Cancel
-          </Button>
-          <Button 
-            disabled={isLoading}
-            type="submit"
-          >
-            Save
-          </Button>
+            <Button disabled={isLoading} secondary onClick={onClose}>
+              Cancel
+            </Button>
+            <Button disabled={isLoading} type="submit">
+              Save
+            </Button>
           </div>
-         </div>
-        </form>
-       </Modal>
-      );
-}
-    export default SettingsModal;
+        </div>
+      </form>
+    </Modal>
+  );
+};
+
+export default SettingsModal;

@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { Black_And_White_Picture } from 'next/font/google';
 import Link from "next/link";
+import Avatar from "../Avatar";
 
 interface DesktopItemProps {
   label: string;

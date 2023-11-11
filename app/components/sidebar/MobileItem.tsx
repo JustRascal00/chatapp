@@ -1,8 +1,9 @@
 import Link from "next/link";
-
 import clsx from "clsx";
+import Avatar from "../Avatar";
 
 interface MobileItemProps {
+  label: string;
   href: string;
   icon: any;
   active?: boolean;
@@ -10,6 +11,7 @@ interface MobileItemProps {
 }
 
 const MobileItem: React.FC<MobileItemProps> = ({ 
+  label, 
   href, 
   icon: Icon, 
   active,
@@ -26,24 +28,24 @@ const MobileItem: React.FC<MobileItemProps> = ({
       onClick={handleClick} 
       href={href} 
       className={clsx(`
-        group 
-        flex 
-        gap-x-3 
-        text-sm 
-        leading-6 
-        font-semibold 
-        w-full 
-        justify-center 
-        p-4 
-        text-gray-500 
-        hover:text-black 
-        hover:bg-gray-100
-      `,
+      group 
+      flex 
+      gap-x-3 
+      text-sm 
+      leading-6 
+      font-semibold 
+      w-full 
+      justify-center 
+      p-4 
+      text-gray-500 
+      hover:text-black 
+      hover:bg-gray-100
+    `,
         active && 'bg-gray-100 text-black',
       )}>
       <Icon className="h-6 w-6" />
     </Link>
-   );
+  );
 }
  
 export default MobileItem;
