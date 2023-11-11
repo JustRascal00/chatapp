@@ -33,18 +33,15 @@ const MobileFooter: React.FC<MobileFooterProps> = ({
     <div
      className=" 
      fixed 
-        justify-between 
-        w-full 
-        bottom-0 
-        z-40 
-        flex 
-        
-        items-center 
-        bg-white 
-        border-t-[1px] 
-        lg:hidden
-        gap-4
-
+     justify-between 
+     w-full 
+     bottom-0 
+     z-40 flex 
+     items-center 
+     bg-white 
+     border-t-[1px] 
+     lg:hidden 
+     gap-4
       "
     >
       <nav className="flex overflow-x-auto">
@@ -62,12 +59,10 @@ const MobileFooter: React.FC<MobileFooterProps> = ({
           </ul>
         </nav>
         <nav className="
-          ml-auto
+          ml-auto 
           transition
-           flex
-           flex-cool
-           justify-center
-           items-center
+          flex items-center
+          pr-4
         "
       >
         <div 
@@ -77,12 +72,10 @@ const MobileFooter: React.FC<MobileFooterProps> = ({
           cursor-pointer
           hover:opacity-75
           transition
-          items-center
-          ml-auto
           "
         >
           <Avatar user={currentUser}/>
-        </div>
+          </div>
         </nav>
     </div>
     </>
